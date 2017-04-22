@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+">
+    <context:property-placeholder location="src/main/resources/connection.properties"/>
+    <bean  id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${con.drivermanager}"/>
+        <property name="url" value="${con.url}"/>
+        <property name="password" value="${con.password}"/>
+        <property name="username" value="${con.username}"/>
+        
+        
+    </bean>
+    
+    <bean id="hibernate3SessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mappingResources">
+            <list>
+                <value>com/mycompany/hibernatemodel/total/ContactsInfo.hbm.xml</value>
+                <value>com/mycompany/hibernatemodel/total/User.hbm.xml</value>
+                <!--                <value>src/java/com.mycompany/hibernatetemplate/entities/ContactsInfo.java</value>
+                <value>src/java/com/mycompany/hibernatetemplate/entities/User.java</value>-->
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+         
+            </props>
+        </property>
+    </bean>
+
+    <bean id="personDAO" class="com.mycompany.hibernatetemplate.control.DaoCrud">
+        <property name="sessionFactory" ref="hibernate3SessionFactory" />
+    </bean>
+      
+</beans>
+<!-- Hibernate 3 XML SessionFactory Bean definition-->
+<!-- 	<bean id="hibernate3SessionFactory"
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mappingResources">
+                <list>
+                        <value>person.hbm.xml</value>
+                </list>
+        </property>
+        <property name="hibernateProperties">
+                <value>
+                        hibernate.dialect=org.hibernate.dialect.MySQLDialect
+                </value>
+        </property>
+</bean> -->
+
+<!-- Hibernate 3 Annotation SessionFactory Bean definition-->
+<!--    <bean id="hibernate3AnnotatedSessionFactory"
+      class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="annotatedClasses">
+        <list>
+            <value>com.journaldev.model.Person</value>
+        </list>
+    </property>
+    <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+            <prop key="hibernate.current_session_context_class">thread</prop>
+            <prop key="hibernate.show_sql">false</prop>
+        </props>
+    </property>
+</bean>-->
+	
+
+    
+    
+
